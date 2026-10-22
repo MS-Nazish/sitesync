@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="Daily labour attendance with GPS and photo proof, and weekly payroll." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23f59e0b'/><path d='M7 22h18M9 22V13l7-5 7 5v9' stroke='%230f172a' stroke-width='2.5' fill='none' stroke-linejoin='round'/></svg>" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet" />
+    <title>SiteSync — Attendance & Payroll</title>
+    <script>
+      // Apply the saved language before React loads so Urdu pages don't flash left-to-right
+      try {
+        if (localStorage.getItem('sitesync_lang') === 'ur') {
+          document.documentElement.lang = 'ur';
+          document.documentElement.dir = 'rtl';
+        }
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

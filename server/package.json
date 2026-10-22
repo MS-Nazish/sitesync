@@ -1,0 +1,31 @@
+{
+  "name": "sitesync-server",
+  "version": "1.0.0",
+  "description": "Site attendance & labour payroll API (Express + MongoDB)",
+  "type": "module",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "dev:memory": "node src/devMemory.js",
+    "seed": "node src/seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "pdfkit": "^0.15.2"
+  },
+  "devDependencies": {
+    "mongodb-memory-server": "^10.1.3"
+  }
+}

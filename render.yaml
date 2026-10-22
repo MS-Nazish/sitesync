@@ -1,0 +1,28 @@
+# Render Blueprint for the API (free plan). In Render: New → Blueprint → pick this repository.
+services:
+  - type: web
+    name: sitesync-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      # Business dates ("today") must follow Pakistan time, not the server's UTC clock
+      - key: TZ
+        value: Asia/Karachi
+      - key: MONGO_URI
+        sync: false # paste your MongoDB Atlas connection string when Render asks
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PUBLIC_URL
+        sync: false # your Vercel address, e.g. https://sitesync.vercel.app (used in wage slip links)
+      - key: DEFAULT_COUNTRY_CODE
+        value: "92"
+      - key: MESSAGE_PROVIDER
+        value: none
