@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import User from '../models/User.js';
+import { appSecret } from '../config/secrets.js';
 import { HttpError, asyncHandler } from '../utils/asyncHandler.js';
 
 export const signToken = (user) =>
-  jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+  jwt.sign({ id: user._id, role: user.role }, appSecret(), {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 
@@ -16,7 +17,7 @@ export const protect = asyncHandler(async (req, _res, next) => {
 
   let payload;
   try {
-    payload = jwt.verify(token, process.env.JWT_SECRET);
+    payload = jwt.verify(token, appSecret());
   } catch {
     throw new HttpError(401, 'Session expired, please log in again');
   }

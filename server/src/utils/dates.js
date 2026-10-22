@@ -8,9 +8,12 @@ export function isDateString(s) {
   return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === s;
 }
 
-// Today's date in the server's local time zone
+// Time zone that defines "today" for attendance. APP_TIMEZONE is used because some hosts
+// (Vercel, AWS Lambda) don't allow setting TZ; without either, the server's own zone is used.
+export const appTimeZone = () => process.env.APP_TIMEZONE || process.env.TZ || undefined;
+
 export function todayString() {
-  return new Date().toLocaleDateString('en-CA');
+  return new Date().toLocaleDateString('en-CA', { timeZone: appTimeZone() });
 }
 
 export function addDays(dateStr, days) {

@@ -4,13 +4,13 @@ import Attendance from '../models/Attendance.js';
 import Advance from '../models/Advance.js';
 import Payroll from '../models/Payroll.js';
 import { protect, authorize, siteScope, assertSiteAccess } from '../middleware/auth.js';
-import { imageUpload, publicPath } from '../middleware/upload.js';
+import { imageUpload, saveImage } from '../middleware/upload.js';
 import { asyncHandler, HttpError } from '../utils/asyncHandler.js';
 
 const router = Router();
 router.use(protect);
 
-const upload = imageUpload('workers');
+const upload = imageUpload();
 const FIELDS = ['name', 'fatherName', 'phone', 'cnic', 'skill', 'dailyWage', 'overtimeRate', 'site', 'joinedAt', 'active'];
 
 // Multipart forms send everything as strings; empty strings mean "clear this field"
@@ -111,7 +111,7 @@ router.post(
   asyncHandler(async (req, res) => {
     const data = pick(req.body);
     assertSiteAccess(req, data.site);
-    data.photo = publicPath('workers', req.file);
+    data.photo = await saveImage('workers', req.file);
     const worker = await Worker.create(data);
     await worker.populate('site', 'name');
     res.status(201).json(worker);
@@ -126,7 +126,7 @@ router.put(
     const worker = await loadWorker(req);
     const data = pick(req.body);
     if (data.site) assertSiteAccess(req, data.site);
-    if (req.file) data.photo = publicPath('workers', req.file);
+    if (req.file) data.photo = await saveImage('workers', req.file);
     worker.set(data);
     await worker.save();
     await worker.populate('site', 'name');

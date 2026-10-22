@@ -1,5 +1,6 @@
 import PDFDocument from 'pdfkit';
 import ExcelJS from 'exceljs';
+import { appTimeZone } from '../utils/dates.js';
 
 const CURRENCY = process.env.CURRENCY_LABEL || 'Rs';
 const money = (n) => `${CURRENCY} ${Math.round(n || 0).toLocaleString('en-US')}`;
@@ -26,7 +27,7 @@ function header(doc, payroll, title) {
   doc.moveDown(0.2).font('Helvetica').fontSize(10);
   doc.text(`Site: ${payroll.site.name}${payroll.site.address ? ` — ${payroll.site.address}` : ''}`);
   doc.text(`Week: ${payroll.weekStart} to ${payroll.weekEnd}    Status: ${STATUS[payroll.status]}`);
-  doc.text(`Generated: ${new Date().toLocaleString('en-GB')}`);
+  doc.text(`Generated: ${new Date().toLocaleString('en-GB', { timeZone: appTimeZone() })}`);
   doc.moveDown(0.8);
 }
 

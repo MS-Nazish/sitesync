@@ -3,8 +3,8 @@ import cors from 'cors';
 import morgan from 'morgan';
 import path from 'path';
 import fs from 'fs';
-import { UPLOAD_ROOT } from './middleware/upload.js';
 import { notFound, errorHandler } from './middleware/error.js';
+import fileRoutes from './routes/files.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
 import siteRoutes from './routes/sites.js';
@@ -24,10 +24,13 @@ export function createApp() {
   app.use(express.json({ limit: '1mb' }));
   if (process.env.NODE_ENV !== 'test') app.use(morgan('dev'));
 
-  fs.mkdirSync(UPLOAD_ROOT, { recursive: true });
-  app.use('/uploads', express.static(UPLOAD_ROOT, { maxAge: '7d' }));
+  // Photos from older versions were saved on disk; serve them if that folder exists (never create it:
+  // serverless file systems are read-only). New photos are stored in MongoDB at /api/files/:id.
+  const legacyUploads = path.resolve('uploads');
+  if (fs.existsSync(legacyUploads)) app.use('/uploads', express.static(legacyUploads, { maxAge: '7d' }));
 
   app.get('/api/health', (_req, res) => res.json({ ok: true }));
+  app.use('/api/files', fileRoutes);
   app.use('/api/auth', authRoutes);
   app.use('/api/users', userRoutes);
   app.use('/api/sites', siteRoutes);

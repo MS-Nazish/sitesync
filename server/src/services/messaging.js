@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { HttpError } from '../utils/asyncHandler.js';
+import { appSecret } from '../config/secrets.js';
 
 // ---------- Phone numbers ----------
 
@@ -20,7 +21,7 @@ export function normalizePhone(raw, countryCode = process.env.DEFAULT_COUNTRY_CO
 // Kept short on purpose (payroll id + worker id + 16-char signature ≈ 64 chars): an Urdu SMS
 // segment holds only 70 characters, and a JWT would add ~4 extra paid segments per message.
 const signSlip = (p, w) =>
-  crypto.createHmac('sha256', process.env.JWT_SECRET).update(`slip:${p}:${w}`).digest('base64url').slice(0, 16);
+  crypto.createHmac('sha256', appSecret()).update(`slip:${p}:${w}`).digest('base64url').slice(0, 16);
 
 export function slipToken(payrollId, workerId) {
   const p = String(payrollId);

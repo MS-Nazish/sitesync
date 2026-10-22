@@ -3,7 +3,7 @@ import Attendance, { ATTENDANCE_STATUS } from '../models/Attendance.js';
 import Worker from '../models/Worker.js';
 import Site from '../models/Site.js';
 import { protect, authorize, isAdmin, siteScope, assertSiteAccess } from '../middleware/auth.js';
-import { imageUpload, publicPath } from '../middleware/upload.js';
+import { imageUpload, saveImage } from '../middleware/upload.js';
 import { asyncHandler, HttpError } from '../utils/asyncHandler.js';
 import { addDays, isDateString, todayString } from '../utils/dates.js';
 import { distanceInMeters, isValidCoord } from '../utils/geo.js';
@@ -12,7 +12,7 @@ import { isWeekLocked } from '../services/payroll.js';
 const router = Router();
 router.use(protect);
 
-const upload = imageUpload('attendance');
+const upload = imageUpload();
 const lockHours = () => Number(process.env.ATTENDANCE_LOCK_HOURS || 24);
 
 // Attendance sheet for one site and day: every active worker plus their record if already marked
@@ -100,7 +100,7 @@ router.post(
       distanceFromSite = distanceInMeters(gps, site.location);
       outsideGeofence = distanceFromSite > site.radiusMeters;
     }
-    const photo = publicPath('attendance', req.file);
+    const photo = await saveImage('attendance', req.file);
 
     const workers = await Worker.find({ _id: { $in: entries.map((e) => e.worker) } });
     const workerMap = new Map(workers.map((w) => [w._id.toString(), w]));
