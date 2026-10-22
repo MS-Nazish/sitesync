@@ -37,6 +37,16 @@ export default defineConfig({
         navigateFallbackDenylist: [/^\/api\//, /^\/uploads\//],
         runtimeCaching: [
           {
+            // Photos never change once saved (stored in MongoDB, served at /api/files/:id)
+            urlPattern: ({ url }) => url.pathname.startsWith('/api/files/') || url.pathname.startsWith('/uploads/'),
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'photos',
+              expiration: { maxEntries: 400, maxAgeSeconds: 30 * 24 * 60 * 60 },
+              cacheableResponse: { statuses: [200] },
+            },
+          },
+          {
             // Data the app reads (sites, attendance sheet, workers…): network first, cached copy when offline.
             // Downloads and public slip links are never cached.
             urlPattern: ({ url, request }) =>
@@ -49,15 +59,6 @@ export default defineConfig({
               cacheName: 'api-cache',
               networkTimeoutSeconds: 6,
               expiration: { maxEntries: 300, maxAgeSeconds: 7 * 24 * 60 * 60 },
-              cacheableResponse: { statuses: [200] },
-            },
-          },
-          {
-            urlPattern: ({ url }) => url.pathname.startsWith('/uploads/'),
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'photos',
-              expiration: { maxEntries: 400, maxAgeSeconds: 30 * 24 * 60 * 60 },
               cacheableResponse: { statuses: [200] },
             },
           },
