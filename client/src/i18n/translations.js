@@ -217,6 +217,11 @@ const en = {
   'log.deleteConfirm': 'Delete this attendance record?',
   'log.deleted': 'Record deleted',
 
+  'needSite.title': 'Add a site first.',
+  'needSite.admin': 'Every worker belongs to a construction site, so create your first site, then come back to add workers.',
+  'needSite.supervisor': 'You are not assigned to any site yet. Ask the admin to assign you to one.',
+  'needSite.button': 'Add a site',
+
   'workers.title': 'Workers',
   'workers.subtitle': '{n} workers · daily wage bill {amount}',
   'workers.add': 'Add worker',
@@ -643,6 +648,11 @@ const ur = {
   'log.offlineHint': '{time} پر آف لائن محفوظ ہوئی',
   'log.deleteConfirm': 'یہ حاضری ریکارڈ حذف کریں؟',
   'log.deleted': 'ریکارڈ حذف ہو گیا',
+
+  'needSite.title': 'پہلے سائٹ شامل کریں۔',
+  'needSite.admin': 'ہر مزدور کسی تعمیراتی سائٹ سے منسلک ہوتا ہے، اس لیے پہلے اپنی سائٹ بنائیں، پھر مزدور شامل کریں۔',
+  'needSite.supervisor': 'آپ کو ابھی کوئی سائٹ نہیں دی گئی۔ ایڈمن سے کہیں کہ آپ کو سائٹ دے۔',
+  'needSite.button': 'سائٹ شامل کریں',
 
   'workers.title': 'مزدور',
   'workers.subtitle': '{n} مزدور · یومیہ اجرت {amount}',

@@ -5,12 +5,14 @@ import { useApi, useSites } from '../hooks/useApi';
 import { useT } from '../i18n/LanguageContext';
 import { Avatar, Badge, Button, Card, EmptyState, Ltr, PageHeader, SiteSelect, Spinner } from '../components/ui';
 import WorkerForm from '../components/WorkerForm';
+import NeedSiteNotice from '../components/NeedSiteNotice';
 import { money, SKILLS } from '../utils/format';
 
 export default function Workers() {
   const navigate = useNavigate();
   const { t } = useT();
-  const { sites } = useSites();
+  const { sites, loading: sitesLoading } = useSites();
+  const noSites = !sitesLoading && sites.length === 0;
   const [filters, setFilters] = useState({ site: '', search: '', skill: '', active: 'true' });
   const { data: workers, loading, reload } = useApi('/workers', {
     site: filters.site || undefined,
@@ -29,11 +31,13 @@ export default function Workers() {
         title={t('workers.title')}
         subtitle={workers ? t('workers.subtitle', { n: workers.length, amount: money(dailyBill) }) : ' '}
         actions={
-          <Button icon={Plus} onClick={() => setFormOpen(true)} disabled={!sites.length}>
+          <Button icon={Plus} onClick={() => setFormOpen(true)} disabled={!sites.length} title={noSites ? t('needSite.title') : undefined}>
             {t('workers.add')}
           </Button>
         }
       />
+
+      {noSites && <NeedSiteNotice />}
 
       <Card className="mb-4">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

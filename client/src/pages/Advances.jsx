@@ -7,6 +7,7 @@ import { useApi, useSites } from '../hooks/useApi';
 import { useAuth } from '../context/AuthContext';
 import { useT } from '../i18n/LanguageContext';
 import { Badge, Button, Card, EmptyState, Field, Modal, PageHeader, SiteSelect, Spinner } from '../components/ui';
+import NeedSiteNotice from '../components/NeedSiteNotice';
 import { fmtDate, money, todayStr } from '../utils/format';
 
 function AdvanceForm({ open, sites, onClose, onSaved }) {
@@ -98,7 +99,7 @@ function AdvanceForm({ open, sites, onClose, onSaved }) {
 export default function Advances() {
   const { user, isAdmin } = useAuth();
   const { t } = useT();
-  const { sites } = useSites();
+  const { sites, loading: sitesLoading } = useSites();
   const [filters, setFilters] = useState({ site: '', status: '' });
   const { data: advances, loading, reload } = useApi('/advances', {
     site: filters.site || undefined,
@@ -130,6 +131,8 @@ export default function Advances() {
           </Button>
         }
       />
+
+      {!sitesLoading && sites.length === 0 && <NeedSiteNotice />}
 
       <Card className="mb-4">
         <div className="grid gap-3 sm:grid-cols-2">
