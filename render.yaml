@@ -4,6 +4,7 @@ services:
     name: sitesync-api
     runtime: node
     plan: free
+    region: singapore # closest Render region to Pakistan and the Atlas Mumbai cluster
     rootDir: server
     buildCommand: npm install
     startCommand: npm start
