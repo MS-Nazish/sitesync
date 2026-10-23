@@ -68,6 +68,26 @@ To fill the database with **demo data** instead: put `MONGO_URI` in `server/.env
 | Wage-slip links open the wrong site | `PUBLIC_URL` on `sitesync-api` must be the frontend address |
 | Changed something in `.env` but nothing happened | Environment changes need a **Redeploy** on Vercel |
 
+## Android app
+
+Built with [PWABuilder](https://www.pwabuilder.com) as a Trusted Web Activity: the app opens the live site full
+screen, so **every `git push` updates the app too**. No new APK is needed unless the icon, name or package changes.
+
+| | |
+|---|---|
+| Package ID | `com.sitesync.attendance` |
+| Install link (share this) | https://sitesync-pi.vercel.app/sitesync.apk |
+| Files | [android-app/](android-app): `SiteSync.apk` (direct install), `SiteSync.aab` (upload to Google Play) |
+| Site link file | [client/public/.well-known/assetlinks.json](client/public/.well-known/assetlinks.json) (hides the address bar) |
+
+⚠️ **`android-app/signing.keystore` and `signing-key-info.txt` are not in git.** Back them up somewhere private
+(e.g. Google Drive). Every future Play Store update must be signed with this same key; if it's lost, the app
+can't be updated under the same listing.
+
+**Google Play:** create a developer account ($25 once) at https://play.google.com/console, create an app, and upload
+`SiteSync.aab`. If you use Play App Signing, add the **app signing key** SHA-256 fingerprint that Play Console shows
+to `assetlinks.json` too (keep the existing one), then push.
+
 ## Alternative: Render
 
 [render.yaml](render.yaml) still describes the API as a Render web service, if you ever prefer Render (it needs a card
