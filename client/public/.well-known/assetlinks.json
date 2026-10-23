@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.sitesync.attendance",
+        "sha256_cert_fingerprints": ["1A:79:DD:E3:ED:A8:80:60:15:06:27:EA:C5:89:61:E2:09:3D:D9:AB:DA:DA:5B:BA:EF:3E:7E:10:A2:09:B0:06"]
+      }
+    }]

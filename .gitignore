@@ -5,3 +5,6 @@ server/uploads/
 *.log
 .claude/
 .vercel/
+# Android signing key and its passwords: keep a private backup, never commit
+android-app/signing.keystore
+android-app/signing-key-info.txt
