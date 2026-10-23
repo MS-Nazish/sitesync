@@ -21,20 +21,31 @@ export default defineConfig({
         description: 'Daily labour attendance with GPS and photo proof, and weekly payroll.',
         theme_color: '#0f172a',
         background_color: '#f1f5f9',
+        id: '/',
         display: 'standalone',
+        orientation: 'portrait',
         start_url: '/',
         scope: '/',
+        lang: 'en',
+        dir: 'auto',
+        categories: ['business', 'productivity'],
+        prefer_related_applications: false,
         icons: [
-          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
-          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
           { src: 'maskable-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
+        // Long-press the app icon on Android to jump straight to these screens
+        shortcuts: [
+          { name: 'Mark attendance', short_name: 'Attendance', url: '/attendance', icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }] },
+          { name: 'Give advance', short_name: 'Advances', url: '/advances', icons: [{ src: 'pwa-192x192.png', sizes: '192x192' }] },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,svg,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/uploads\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/uploads\//, /^\/\.well-known\//, /\.apk$/],
         runtimeCaching: [
           {
             // Photos never change once saved (stored in MongoDB, served at /api/files/:id)
